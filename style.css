@@ -1,0 +1,35 @@
+.calculator {
+    width: 500px;
+    height: 600px;
+    margin: 32px;
+    padding: 32px;
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.display {
+    color: white;
+    background-color: lightgrey;
+}
+
+.erase {
+    padding: 8px 0px;
+}
+
+.input {
+    display: flex;
+    flex-wrap: wrap;
+    flex-grow: 1;
+}
+
+button {
+    width: 100px;
+    height: 100px;
+    margin: 8px;
+}
+
+#clear, #del {
+    height: 25px;
+}
