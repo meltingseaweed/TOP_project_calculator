@@ -12,6 +12,8 @@
 .display {
     color: white;
     background-color: lightgrey;
+    width: 400px;
+    height: 200px;
 }
 
 .erase {
