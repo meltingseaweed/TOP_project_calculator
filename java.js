@@ -135,7 +135,7 @@ let solved = false;
                     
                 if ((solved === false) && (numTwo === "")) {
                     if (numOne === "") {
-                    return disp.textContent = "Enter a number first";
+                    return disp.textContent = "Please enter a number first";
                 }
 
                     const clickedId = event.target.id;
@@ -172,7 +172,7 @@ let solved = false;
     equalsBtn.addEventListener ("click", () => {
         if (operator && numOne && numTwo) {
             answer = calculate(operator, numOne, numTwo);
-            equation += ` = ${answer}`;
+            equation += ` = ${Math.round(answer * 100) / 100}`;
             disp.textContent = `${equation}`
             solved = true;
         }
