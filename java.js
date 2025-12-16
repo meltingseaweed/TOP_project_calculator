@@ -98,9 +98,16 @@ let solved = false;
                         inputNumber = "9";
                         break;
                     case ("decimal"):
-                        inputNumber = ".";
+                        if ((operator === "") && (!numOne.includes("."))) {
+                            inputNumber = ".";
+                        } else if ((operator !== "") && (!numTwo.includes("."))) {
+                            inputNumber = ".";
+                        } else {
+                        inputNumber = "";
+                        }
                         break;
                 }
+
                 if (operator === "") {
                     numOne += inputNumber;
                     equation += inputNumber;
