@@ -47,7 +47,11 @@ const equalsBtn = document.querySelector ("#equals");
 const clearBtn = document.querySelector("#clear");
 const delBtn = document.querySelector("#del");
 let disp = document.querySelector("#display");
+const displayForm = document.getElementById('calcDisplay');
 
+// Would be so nice to have a function to reset values..
+// Will the equation variable be necessary after all the displayForm.values
+// have replaced the equations and textContent?
 let equation = "";
 let inputOperator = "";
 let inputNumber = "";
@@ -56,9 +60,6 @@ let numTwo = "";
 let operator = "";
 let answer = 0;
 let solved = false;
-
-// Do the mouse input events need to be functions? 
-
 
 // Events for clicking numbers and operators:
         numBtn.forEach((button) => {
@@ -110,13 +111,11 @@ let solved = false;
 
                 if (operator === "") {
                     numOne += inputNumber;
-                    equation += inputNumber;
-                    disp.textContent = `${equation}`
+                    displayForm.value += inputNumber;
                     return numOne;
                 } else if (operator !== "") {
                     numTwo += inputNumber;
-                    equation += inputNumber;
-                    disp.textContent = `${equation}`
+                    displayForm.value += inputNumber;
                     return numTwo;
                 } 
             } else if (solved === true) {
@@ -125,7 +124,7 @@ let solved = false;
                 operator = "";
                 answer = 0;
                 equation = "";
-                disp.textContent = `${equation}`
+                displayForm.value = "";
                 solved = false;
             }
 
@@ -136,32 +135,27 @@ let solved = false;
             button.addEventListener("click", function (event) {
                 if ((operator !== "") && (numTwo === "")) {
                     operator = "";
-                    equation = equation.slice(0, -3);
-                    disp.textContent = `${equation}`;
+                    displayForm.value = displayForm.value.slice(0, -3);
                 } 
                     
                 if ((solved === false) && (numTwo === "")) {
                     if (numOne === "") {
-                    return disp.textContent = "Please enter a number first";
+                    return displayForm.value = "Please enter a number first";
                 }
 
                     const clickedId = event.target.id;
                     switch (clickedId) {
                         case ("add"):
-                            equation += " + ";
-                            disp.textContent = `${equation}`
+                            displayForm.value += " + ";
                             return operator = "+";
                         case ("subtract"):
-                            equation += " - ";
-                            disp.textContent = `${equation}`
+                            displayForm.value += " - ";
                             return operator = "-";
                         case ("multiply"):
-                            equation += " * ";
-                            disp.textContent = `${equation}`
+                            displayForm.value += " * ";
                             return operator = "*";
                         case ("divide"):
-                            equation += " / ";
-                            disp.textContent = `${equation}`
+                            displayForm.value += " / ";
                             return operator = "/";
                     }
                 } else if (solved === true) {
@@ -170,7 +164,7 @@ let solved = false;
                     operator = "";
                     answer = 0;
                     equation = "";
-                    disp.textContent = `${equation}`
+                    displayForm.value = "";
                     solved = false;
                 }
             });
@@ -179,8 +173,7 @@ let solved = false;
     equalsBtn.addEventListener ("click", () => {
         if (operator && numOne && numTwo) {
             answer = calculate(operator, numOne, numTwo);
-            equation += ` = ${Math.round(answer * 100) / 100}`;
-            disp.textContent = `${equation}`
+            displayForm.value += ` = ${Math.round(answer * 100) / 100}`;
             solved = true;
         }
     });
@@ -191,7 +184,7 @@ let solved = false;
         operator = "";
         answer = 0;
         equation = "";
-        disp.textContent = `${equation}`
+        displayForm.value = "";
         solved = false;
         });
 
@@ -199,21 +192,18 @@ let solved = false;
         if (solved === false) {
             if ((numTwo === "") && (operator === "")) {
                 numOne = numOne.slice(0, -1);
-                equation = equation.slice (0, -1);
-                disp.textContent = `${equation}`;
+                displayForm.value = displayForm.value.slice (0, -1);
             } else if ((numTwo === "") && (operator !== "")) {
                 operator = "";
-                equation = equation.slice(0, -3);
-                disp.textContent = `${equation}`;
+                displayForm.value = displayForm.value.slice (0, -3);
             } else if ((numOne !== "") && (operator !== "")) {
                 numTwo = numTwo.slice(0, -1);
-                equation = equation.slice(0, -1);
-                disp.textContent = `${equation}`;
+                displayForm.value = displayForm.value.slice (0, -1);
              } 
     }
     });
+// Will need to alter "displayForm.value parts"
 
-    const displayForm = document.getElementById('calcDisplay');
     document.addEventListener("keydown", (event) => {
         if (solved === true) {
             numOne = "";
@@ -248,11 +238,9 @@ let solved = false;
             displayForm.value += ` = ${Math.round(answer * 100) / 100}`;
             solved = true;
         }
-        // Make key event to calculate the equation
-        //if (event.key =="=") { displayForm.value += event.key; }
         }
     });
-    
+
     let index = 0;
     function getEquation (string) {
         if (string.includes("+") === true) {
