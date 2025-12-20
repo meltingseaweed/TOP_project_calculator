@@ -46,13 +46,9 @@ const opBtn = document.querySelectorAll
 const equalsBtn = document.querySelector ("#equals");
 const clearBtn = document.querySelector("#clear");
 const delBtn = document.querySelector("#del");
-let disp = document.querySelector("#display");
 const displayForm = document.getElementById('calcDisplay');
 
 // Would be so nice to have a function to reset values..
-// Will the equation variable be necessary after all the displayForm.values
-// have replaced the equations and textContent?
-let equation = "";
 let inputOperator = "";
 let inputNumber = "";
 let numOne = "";
@@ -60,6 +56,17 @@ let numTwo = "";
 let operator = "";
 let answer = 0;
 let solved = false;
+
+function resetValues () {
+    inputOperator = "";
+    inputNumber = "";
+    numOne = "";
+    numTwo = "";
+    operator = "";
+    answer = 0;
+    solved = false;
+    return displayForm.value = "";
+}
 
 // Events for clicking numbers and operators:
         numBtn.forEach((button) => {
@@ -123,7 +130,6 @@ let solved = false;
                 numTwo = "";
                 operator = "";
                 answer = 0;
-                equation = "";
                 displayForm.value = "";
                 solved = false;
             }
@@ -131,18 +137,22 @@ let solved = false;
             });
         });
     
+        // Problem with mixing typing and buttons, because the numOne values
+        // and operator boolean statements don't add up.
         opBtn.forEach((button) => {
             button.addEventListener("click", function (event) {
+                if (solved === true) {
+                    resetValues();
+                }
+                
                 if ((operator !== "") && (numTwo === "")) {
                     operator = "";
                     displayForm.value = displayForm.value.slice(0, -3);
                 } 
                     
-                if ((solved === false) && (numTwo === "")) {
-                    if (numOne === "") {
-                    return displayForm.value = "Please enter a number first";
-                }
-
+                if ((solved === false) && (displayForm.value === "")) {
+                    return displayForm.value = "";
+                } else {
                     const clickedId = event.target.id;
                     switch (clickedId) {
                         case ("add"):
@@ -158,19 +168,12 @@ let solved = false;
                             displayForm.value += " / ";
                             return operator = "/";
                     }
-                } else if (solved === true) {
-                    numOne = "";
-                    numTwo = "";
-                    operator = "";
-                    answer = 0;
-                    equation = "";
-                    displayForm.value = "";
-                    solved = false;
                 }
+                }); 
             });
-        });
 
     equalsBtn.addEventListener ("click", () => {
+        getEquation (displayForm.value);
         if (operator && numOne && numTwo) {
             answer = calculate(operator, numOne, numTwo);
             displayForm.value += ` = ${Math.round(answer * 100) / 100}`;
@@ -179,13 +182,7 @@ let solved = false;
     });
 
     clearBtn.addEventListener("click", () => {
-        numOne = "";
-        numTwo = "";
-        operator = "";
-        answer = 0;
-        equation = "";
-        displayForm.value = "";
-        solved = false;
+        resetValues();
         });
 
     delBtn.addEventListener("click", () => {
@@ -206,16 +203,8 @@ let solved = false;
 
     document.addEventListener("keydown", (event) => {
         if (solved === true) {
-            numOne = "";
-            numTwo = "";
-            operator = "";
-            answer = 0;
-            equation = "";
-            displayForm.value = "";
-            solved = false;
-        }
-
-        if (solved === false) {
+            resetValues();
+        } else if (solved === false) {
         console.log(event);
         if (event.key =="1") { displayForm.value += event.key; }
         if (event.key =="2") { displayForm.value += event.key; }
@@ -227,18 +216,22 @@ let solved = false;
         if (event.key =="8") { displayForm.value += event.key; }
         if (event.key =="9") { displayForm.value += event.key; }
         if (event.key =="0") { displayForm.value += event.key; }
-        if (event.key =="+") { displayForm.value += event.key; }
-        if (event.key =="-") { displayForm.value += event.key; }
-        if (event.key =="*") { displayForm.value += event.key; }
-        if (event.key =="/") { displayForm.value += event.key; }
+        if (event.key =="+") { displayForm.value += ` ${event.key} `; }
+        if (event.key =="-") { displayForm.value += ` ${event.key} `; }
+        if (event.key =="*") { displayForm.value += ` ${event.key} `; }
+        if (event.key =="/") { displayForm.value += ` ${event.key} `; }
         if (event.key =="Backspace") { displayForm.value.slice(0, -1); }
         if (event.key =="Enter") { 
+
             getEquation (displayForm.value);
             answer = calculate(operator, numOne, numTwo);
             displayForm.value += ` = ${Math.round(answer * 100) / 100}`;
             solved = true;
+            
         }
-        }
+        
+        
+    }
     });
 
     let index = 0;
