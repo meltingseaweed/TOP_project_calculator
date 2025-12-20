@@ -212,4 +212,68 @@ let solved = false;
              } 
     }
     });
+
+    const displayForm = document.getElementById('calcDisplay');
+    document.addEventListener("keydown", (event) => {
+        if (solved === true) {
+            numOne = "";
+            numTwo = "";
+            operator = "";
+            answer = 0;
+            equation = "";
+            displayForm.value = "";
+            solved = false;
+        }
+
+        if (solved === false) {
+        console.log(event);
+        if (event.key =="1") { displayForm.value += event.key; }
+        if (event.key =="2") { displayForm.value += event.key; }
+        if (event.key =="3") { displayForm.value += event.key; }
+        if (event.key =="4") { displayForm.value += event.key; }
+        if (event.key =="5") { displayForm.value += event.key; }
+        if (event.key =="6") { displayForm.value += event.key; }
+        if (event.key =="7") { displayForm.value += event.key; }
+        if (event.key =="8") { displayForm.value += event.key; }
+        if (event.key =="9") { displayForm.value += event.key; }
+        if (event.key =="0") { displayForm.value += event.key; }
+        if (event.key =="+") { displayForm.value += event.key; }
+        if (event.key =="-") { displayForm.value += event.key; }
+        if (event.key =="*") { displayForm.value += event.key; }
+        if (event.key =="/") { displayForm.value += event.key; }
+        if (event.key =="Backspace") { displayForm.value.slice(0, -1); }
+        if (event.key =="Enter") { 
+            getEquation (displayForm.value);
+            answer = calculate(operator, numOne, numTwo);
+            displayForm.value += ` = ${Math.round(answer * 100) / 100}`;
+            solved = true;
+        }
+        // Make key event to calculate the equation
+        //if (event.key =="=") { displayForm.value += event.key; }
+        }
+    });
     
+    let index = 0;
+    function getEquation (string) {
+        if (string.includes("+") === true) {
+                index = string.indexOf("+");
+                numOne = string.slice(0, index);
+                numTwo = string.slice (index+1);
+                operator = "+";
+        } else if (string.includes("-") === true) {
+                index = string.indexOf("-");
+                numOne = string.slice(0, index);
+                numTwo = string.slice (index+1);
+                operator = "-";
+        } else if (string.includes("*") === true) {
+                index = string.indexOf("*");
+                numOne = string.slice(0, index);
+                numTwo = string.slice (index+1);
+                operator = "*";
+        } else if (string.includes("/") === true) {
+                index = string.indexOf("/");
+                numOne = string.slice(0, index);
+                numTwo = string.slice (index+1);
+                operator = "/";
+        }
+    }

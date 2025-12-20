@@ -9,18 +9,25 @@
     justify-content: space-between;
 }
 
-.display {
+input {
     color: white;
     background-color: lightgrey;
     width: 400px;
     height: 200px;
 }
 
+/* .display {
+    color: white;
+    background-color: lightgrey;
+    width: 400px;
+    height: 200px;
+} */
+
 .erase {
     padding: 8px 0px;
 }
 
-.input {
+.inputBtns {
     display: flex;
     flex-wrap: wrap;
     flex-grow: 1;
