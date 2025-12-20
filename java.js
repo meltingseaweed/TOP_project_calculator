@@ -126,12 +126,7 @@ function resetValues () {
                     return numTwo;
                 } 
             } else if (solved === true) {
-                numOne = "";
-                numTwo = "";
-                operator = "";
-                answer = 0;
-                displayForm.value = "";
-                solved = false;
+                resetValues();
             }
 
             });
@@ -174,7 +169,9 @@ function resetValues () {
 
     equalsBtn.addEventListener ("click", () => {
         getEquation (displayForm.value);
-        if (operator && numOne && numTwo) {
+        if (solved === true) {
+            resetValues();
+        } else if (operator && numOne && numTwo) {
             answer = calculate(operator, numOne, numTwo);
             displayForm.value += ` = ${Math.round(answer * 100) / 100}`;
             solved = true;
@@ -202,6 +199,7 @@ function resetValues () {
 // Will need to alter "displayForm.value parts"
 
     document.addEventListener("keydown", (event) => {
+        event.preventDefault();
         if (solved === true) {
             resetValues();
         } else if (solved === false) {
@@ -220,17 +218,13 @@ function resetValues () {
         if (event.key =="-") { displayForm.value += ` ${event.key} `; }
         if (event.key =="*") { displayForm.value += ` ${event.key} `; }
         if (event.key =="/") { displayForm.value += ` ${event.key} `; }
-        if (event.key =="Backspace") { displayForm.value.slice(0, -1); }
-        if (event.key =="Enter") { 
-
+        if (event.key =="Backspace") { displayForm.value = displayForm.value.slice(0, -1); }
+        if (event.key =="Enter") {
             getEquation (displayForm.value);
             answer = calculate(operator, numOne, numTwo);
             displayForm.value += ` = ${Math.round(answer * 100) / 100}`;
-            solved = true;
-            
+            solved = true;   
         }
-        
-        
     }
     });
 
